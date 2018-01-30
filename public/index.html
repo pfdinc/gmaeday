@@ -1,0 +1,178 @@
+<html>
+<head>
+<title>Connect5</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<script src="https://use.fontawesome.com/4c57776fcf.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="https://cdn.rawgit.com/zenorocha/clipboard.js/v1.5.10/dist/clipboard.min.js"></script>
+
+
+<link href='https://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" id="pageStyle" href="5ive_board.css">
+<link rel="stylesheet" type="text/css" href="dataTable.css">
+<link rel="stylesheet" type="text/css" href="animate.css">
+
+
+<header>
+    <a href="#" id="darkToggle" onclick="switchCSS()"><i class="fa fa-moon-o" aria-hidden="true"></i>Dark Mode</a>
+    <div class="container">
+		<div class="row">
+			<div id="title" class="col-md-12" align="center">
+				<h1 id="header">Connect 5</h1>
+			</div>
+		</div>
+	</div>
+</header>
+
+<body>
+<div id="main">
+	<div class="modal fade" id="winModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title" style="text-align: center">Game Over</h1>
+				</div>
+				<div id="winBody"class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="rulesModal" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h1 class="modal-title">Connect 5 Rules</h1>
+				</div>
+				<div id="ruleBody"class="modal-body">
+					<h3>Creating a New Game</h3>
+					<p>After hitting the new game button, you will be given a URL which you may share with your opponent. Your
+						opponent will then navigate to the URL and automatically connect to your game.</p>
+					<h3>Goal</h3>
+					<p>The object is for a player to successfully populate five squares
+						in a straight line either vertically, horizontally, or diagonally.</p>
+					<h3>Rules</h3>
+					<p>The player who has created the game will be the first to play. (S)he must play a card and populate
+						a square having the same or higher number than the card played. (A square may never be populated by
+						a card with a higher value). Play continues back-to-back until one player has won.</p>
+					<h3>Turns</h3>
+					<p>A turn consists of either: 1) playing a card and populating a square, or 2) drawing a new card.
+						All players have this option when they hold less than four cards. When a player holds the maximum
+						of four cards, (s)he must play a card and populate a square. Obviously, if a player holds no cards,
+						(s)he must draw a card. </p>
+					<h3>Notes</h3>
+					<p>Dead cards are possible. For example: if a player holds card number 95 and all squares 95 through
+						99 have been populated, 95 is a dead card. If a player comes to hold four dead cards, they have lost
+						the game and their opponent has won.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<!-- New Game Button -->
+			<div id="newGameWrapper" class="col-md-12" align="center">
+				<div>
+					<button type="button" class="btn game btn-primary" onclick="newGame()">New Game</button>
+					<!-- Target -->
+					<input id="player2Link" value="" data-toggle="tooltip" data-placement="bottom" title="Send this link to a friend and start playing!">
+					<!-- Trigger -->
+					<button id="copyBtn" class="btn" data-clipboard-target="#player2Link">
+						<img id="clipBoard" src="images/clippy.svg" alt="Copy to clipboard">
+					</button>
+					<button type="button" class="btn rules btn-primary" onclick="showRules()">Rules</button>
+				</div>
+			</div>
+			<div id="optionsWrapper" class="col-md-12" align="center">
+				<div id="optionsContainer">
+					<div id="drawCardWrapper" class="optionContainerDivs" >
+						<a href="#" id="drawCardIcon" onclick="draw()"><i class="fa fa-plus fa-2x"></i> Draw Card</a>
+					</div>
+					<div id="previousPlayTable" class="optionContainerDivs" >
+						<a href="#" id="popoverTable" data-toggle="popover" data-trigger="hover" data-placement="bottom" ><i class="fa fa-table fa-2x"></i></a>
+					</div>
+					<div id="playerTabs" class="optionContainerDivs" >
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row">
+			<div id="centerColumn" class="col-md-12">
+				<div id="boardContainer" align="center">
+					<table id="board" align="center"></table>
+				</div>
+				<div id="bottomColumn" class="col-md-12" align="center"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Creates the table to insert into popover --->
+<div id="tableContainer" style="display:none">
+	<table id="draw" align="center" class="table">
+		<thead id="drawHead" >
+			<tr>
+				<th style="text-align:center">Turn</th>
+				<th style="text-align:center">Player</th>
+				<th style="text-align:center">Card</th>
+				<th style="text-align:center">Location</th>
+			</tr>
+		</thead>
+		<tbody id="drawBody">
+		</tbody>
+	</table>
+</div>
+
+<footer class="footer">
+    <div class="copyright">
+			<div class="row">
+				<div id="footerWrapper" class="col-md-12">
+					<div id="footerContainer">
+						<div id="leftFoot" class="footerContainerDivs">
+							<p>© 2016 connect5.online</p>
+						</div>
+						<div id="middleFoot" class="footerContainerDivs">
+							<p>Created by: Brant, Elliot, Noel, Pushkin, and Brandon</p>
+						</div>
+						<div id="rightFoot" class="footerContainerDivs">
+							<p>CWU CS380</p>
+						</div>
+					</div>
+				</div>
+			</div>
+    </div>
+</footer>
+
+</body>
+
+</html>
+<script src="bootstrap-notify.min.js"></script>
+<script src="5inarow_ui_functionality.js"></script>
+<script src="socketFunction.js"></script>
+<script>
+$(document).ready(function() {
+	drawBoard();
+	createPopover();
+	var clipboard = new Clipboard('.btn');
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
+} );
+</script>

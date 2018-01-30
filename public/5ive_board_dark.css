@@ -1,0 +1,139 @@
+body {
+	background-color: #2b2b2b;
+}
+#darkToggle {
+	text-decoration: none;
+	padding-left: 1em;
+}
+#header {
+	font-family: "Merriweather", serif;
+	font-size: 60px;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+	color: #545454;
+	padding-bottom: .3em;
+}
+#title {
+	align: center;
+}
+#main{
+	width: 100%;
+}
+.container {
+	min-width: 550px;
+}
+.col-md-12 {
+	padding: 0px;
+}
+#newGameWrapper {
+	align: center;
+}
+img {
+	width: 15px;
+	height: 15px;
+}
+.optionContainerDivs {
+	width: 33%;
+}
+.footerContainerDivs {
+	width: 33%;
+	float: left;
+}
+#boardContainer{
+	padding: 1%;
+}
+#board {
+	width: 454px;
+}
+#board table, #board td{
+  border: 4px solid #545454;
+  border-collapse: collapse;
+	background: #d3d3d3;
+	color: black;
+	opacity: 1;
+}
+#board td{
+  width: 45px;
+  height: 45px;
+  text-align: center;
+	font-size: 15px;
+}
+#board td:hover{
+	background-color: white;
+	color: black;
+}
+#bottomColumn {
+	padding: 20px 0px 50px 0px;
+}
+
+#drawCardWrapper {
+	float: left;
+}
+#drawCardWrapper a {
+	text-decoration: none;
+}
+#previousPlayTable {
+	float: right;
+}
+#leftFoot{
+    text-align: left;
+	padding-left: 3em;
+}
+#middleFoot{
+    text-align: center;
+}
+#rightFoot{
+    text-align: right;
+	padding-right: 1em;
+}
+.popover {
+	max-width: inherit;
+	background-color: #2b2b2b;
+}
+#drawHead th {
+	color: white;
+}
+#drawBody tr {
+	color: white;
+}
+.player1{
+	outline: 5px solid #F73697;
+	outline-offset: -8px;
+}
+.player2{
+	outline: 5px solid #F7F736;
+	outline-offset: -8px;
+}
+.playable{
+	outline: 5px solid #3c763d;
+	opacity: .2;
+	outline-offset: -8px;
+}
+.btn-group{
+	padding: 0px 5px;
+}
+.card{
+	font-size: 30px;
+	background-color: #337ab7;
+	color: white;
+	height: 80px;
+	width: 50px;
+	text-align-last: center;
+}
+.game{
+	font-size: 10px;
+	width: 10em;
+	background-color: #337ab7;
+	color: white;
+}
+.rules {
+	font-size: 10px;
+	background-color: #337ab7;
+	color: white;
+}
+.copyright{
+	border-top: 2px dashed #ddd;
+	padding: 5px 0px 0px;
+	color: #999;
+}
